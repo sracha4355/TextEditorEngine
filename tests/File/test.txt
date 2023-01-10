@@ -1,0 +1,6 @@
+Hello this is a text file
+Testing
+
+print("Hello World")
+
+	line 4 ksi
