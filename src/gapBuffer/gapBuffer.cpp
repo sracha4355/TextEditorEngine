@@ -1,18 +1,15 @@
 #include "gapBuffer.h"
 
-//where I left off: working on resizing buffer and resizing gap, I was considering how to deal with edge cases: when there are less than ideal units to shift within the buffer
-	// for when I am resizing gap buffer
-
-
 //init values
 GapBuffer :: GapBuffer(int bufferSize, int gapSize){
+	// buffer will have empty char's as place holders
 	m_buffer = new char[bufferSize];
 	for(int i = 0; i < bufferSize; i++){
 		m_buffer[i] = 0;
 	}
+	
 	m_size = bufferSize;
 	m_occupied = 0;
-	
 	m_indexOfLastElement = 0;
 	m_gapSize = gapSize;
 	m_gapStartPos = 0;
@@ -22,6 +19,7 @@ GapBuffer :: GapBuffer(int bufferSize, int gapSize){
 
 //uses default values contained in gapBuffer.h (MINSIZE, MINGAPSIZE)
 GapBuffer :: GapBuffer(){	
+	// buffer will have empty char's as place holders
 	m_buffer = new char[MINSIZE];
 	for(int i = 0; i < MINSIZE; i++){
 		m_buffer[i] = 0;

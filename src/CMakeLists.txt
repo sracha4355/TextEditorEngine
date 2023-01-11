@@ -5,4 +5,6 @@ add_subdirectory(Controller)
 add_subdirectory(Commands)
 add_subdirectory(Clipboard)
 add_subdirectory(UndoRedo)
+add_subdirectory(Window)
+
 
