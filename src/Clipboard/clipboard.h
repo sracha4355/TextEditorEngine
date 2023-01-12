@@ -9,9 +9,10 @@ class Clipboard {
 		Clipboard();
 		void insertLines(string*, int);
 		bool clearClipboard();
+		vector<string> getContent();		
+		void dump();
 		
 	private:
-
 		vector <string> content;
 		int m_numOfLines;
 		

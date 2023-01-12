@@ -23,9 +23,16 @@ struct Command{
 	int keyBindingLength;
 	string commmandDescrip;
 	
+	// function to define how command works
 	void (*callback) (TextBuffer&, string);
+	// function to define how to reverse command for undo operation
+	void (*undoCallback) (TextBuffer&, string);
 	void behavior(TextBuffer & buf, string _fullCommand){
 			callback(buf, _fullCommand);
+	}
+	
+	void undoBehavior(TextBuffer & buf, string _fullCommand){
+			undoCallback(buf, _fullCommand);
 	}
 	
 };
