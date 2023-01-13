@@ -1,5 +1,7 @@
 #include <buffer.h>
 
+
+
 void di(TextBuffer&);
 void deleteLineTests(){
 	TextBuffer bu;
@@ -230,7 +232,10 @@ void shiftLineTests1(){
 
 int main(){
 	cout << "TextBuffer Tests " << endl;
-	deleteLineTests();
+	TextBuffer * bu = new TextBuffer;
+	for(int i = 0; i < 5; i++) bu -> createNewLine();
+	delete bu;
+	//deleteLineTests();
 
 //	tests4();
 	//shiftLineTests();

@@ -7,69 +7,100 @@
 	
 */
 
+/*
+	Where I left: I am thinking of restructing the Command Struct
+	- the command struct will have a undo function and a execute function
+	- and I add fields to link a TextBuffer and Clipboard
+	- The class Commands will manage the undo and redo functionality
+	- my previous idea was using a system of callback functions and function pointers
+	- but what I am thinking of now may be simplier
+*/
+
 #pragma once
-#include "buffer.h"
+#include "window.h"
 #include "clipboard.h"
+#include "buffer.h"
+
+#include <functional>
 #include <set>
 #include <string>
+#include <stack>
 
 using namespace std;
 
-struct Command{
-	string fullCommand;
-	// the combinations of keys that invokes the command
+// typedef function <void(TextBuffer&, Clipboard&, string, int)> Callback;
+// typedef function <void(TextBuffer&, Clipboard&, string, int)> UndoCallback;
+
+typedef void (*Callback) (TextBuffer*, Clipboard*, string, int);
+typedef void (*UndoCallback) (TextBuffer*, Clipboard*, string, int);
+
+struct Command {
+	/*Command information*/
+	string commandHeader;
+	int commandTail;
+
+	//Window object contains references to a TextBuffer and Clipboard
+	Window * win;
 	
-	string keybinding;
-	int keyBindingLength;
-	string commmandDescrip;
+	// the callback functions
+	Callback cb = nullptr;
+	UndoCallback ub = nullptr;
 	
-	// function to define how command works
-	void (*callback) (TextBuffer&, string);
-	// function to define how to reverse command for undo operation
-	void (*undoCallback) (TextBuffer&, string);
-	void behavior(TextBuffer & buf, string _fullCommand){
-			callback(buf, _fullCommand);
+
+	void callCallback(){
+		if(cb != nullptr && win != nullptr){
+			cb(win -> getBufferRef(), win -> getClipboardRef(), commandHeader, commandTail);
+		}
 	}
 	
-	void undoBehavior(TextBuffer & buf, string _fullCommand){
-			undoCallback(buf, _fullCommand);
-	}
-	
+	void callUndoCallback(){
+		if(ub != nullptr && win != nullptr){
+			ub(win -> getBufferRef(), win -> getClipboardRef(), commandHeader, commandTail);
+		}
+	}	
 };
+
+
+
+
 
 // cc 0  "cc" is the keybinding "cc0" is the full command
 // we should and pass the full command title into the callback
 // this would restrict creating new commands to command identifer first then number
 // reserve zero as a do nothing command
 
-/*	Basic Commands I need to implement
+/*	
+	Basic Commands I need to implement
 	Copy, Paste, Cut, Delete : make command versions that do this for n lines
 	Undo, Redo, Find
 */
 
 class Commands {
 	public:
-		Commands();
+		Commands(Window*);
         ~Commands();
         
-        Command * initCommand(string, int, string, void (*callback)(TextBuffer&, string));
+        bool insertCommand(string, Command);
+        bool removeCommand(string);
+        Command * findCommand(string);
         
-        bool insertCommand(Command&);
-        void getCommandDetails(string keyBinding);
-        void executeCommand(string fullCommand);
-  		void removeCommand(string);
-  		void printAllCommands();
-  		
-  		void setCommandBehavior(string keyBinding, void (*callback)(TextBuffer&, string));
-  		
         
-  private:
+        void addToUndo(Command);
+       	void addToRedo(Command);
+       	void undo();
+       	void redo();
+      
+  		  
+	private:
+	
+		Window * m_win;
 		map <string, Command> m_commandList;
-		int m_numOfCommands;
-
+		// Possibly will bind the callbacks to the std :: function objects in the stacks?
+		stack <Command> m_undo;
+		stack <Command> m_redo;
 };
-
-
+ 
+ 
 
 
 
