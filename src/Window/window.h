@@ -10,6 +10,8 @@ class Window{
 		Window(string);
 		Window();
 		~Window();
+		
+		
 		void startWin();
 		void endWin();
 		TextBuffer*	getBufferRef();	
