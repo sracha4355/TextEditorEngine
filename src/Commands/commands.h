@@ -5,6 +5,7 @@
 #include <utility>
 #include <stack>
 
+
 using namespace std;
 
 typedef void (*Callback)(Window*,string,int);
@@ -25,6 +26,12 @@ class commandsContainer{
 		void addToRedo(const Command & com);
 		void undo();
 		void redo();
+		void insertCommand(const string, const Command&);
+		bool removeCommand(const string);
+		Command * getCommand(const string);
+		void executeCommand(const string, string, int);
+		
+		
 		bool isUndoEmpty();
 		bool isRedoEmpty();
 		int undoSize();
@@ -39,49 +46,6 @@ class commandsContainer{
 		
 };
 
-commandsContainer :: commandsContainer(Window * _win){
-	m_win = _win;
-}
-
-bool commandsContainer :: isUndoEmpty(){return m_undo.empty();}
-bool commandsContainer :: isRedoEmpty(){return m_redo.empty();}
-int commandsContainer :: undoSize(){return m_undo.size();}
-int commandsContainer :: redoSize(){return m_redo.size();}
-
-
-void commandsContainer :: addToUndo(const Command & com){
-	if(com.cbFunctions.second == nullptr) return;
-	m_undo.push(com.cbFunctions);		
-}
-
-void commandsContainer :: addToRedo(const Command & com){
-	if(com.cbFunctions.first == nullptr) return;
-	m_redo.push(com.cbFunctions);		
-}
-
-void commandsContainer :: undo(){
-	if(m_undo.empty()) {
-		cerr << "undo stack is empty" << endl;
-		return;
-	}
-	//pair <callbackFunc, callbackFunc>
-	auto functions = m_undo.top();
-	functions.second(m_win, "dummy header ", 55);
-	m_redo.push(functions);
-	m_undo.pop();
-}
-
-void commandsContainer :: redo(){
-	if(m_redo.empty()){
-		cerr << "redo stack is empty" << endl;
-		return;
-	}
-	auto functions = m_redo.top();
-	functions.first(m_win, "dummy header", 33);
-	m_undo.push(functions);
-	m_redo.pop();
-
-}
 
 
 

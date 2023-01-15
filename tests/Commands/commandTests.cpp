@@ -12,6 +12,67 @@ void tUB(Window * win, string ch, int ct){
 }
 
 
+TEST(commandListTests, testInsert){
+	Window win;
+	commandsContainer cont(&win);
+	Command testCom;		
+	testCom.cbFunctions = make_pair(tCB, tUB);
+	
+	Command testCom2;		
+	testCom2.cbFunctions = make_pair(tCB, tUB);
+	
+	cont.insertCommand("c", testCom);
+	cont.insertCommand("p", testCom2);
+	
+	EXPECT_NE(cont.getCommand("c"), nullptr);
+	EXPECT_NE(cont.getCommand("p"), nullptr);
+	
+}
+
+
+TEST(commandListTests, testRemove){
+	Window win;
+	commandsContainer cont(&win);
+	Command testCom;		
+	testCom.cbFunctions = make_pair(tCB, tUB);
+	
+	Command testCom2;		
+	testCom2.cbFunctions = make_pair(tCB, tUB);
+	
+	cont.insertCommand("c", testCom);
+	cont.insertCommand("p", testCom2);
+	
+	EXPECT_EQ(cont.removeCommand("c"), true);
+	EXPECT_EQ(cont.removeCommand("p"), true);
+	EXPECT_EQ(cont.removeCommand("p"), false);
+	
+}
+
+TEST(commandListTests, testExecuteCommand){
+	Window win;
+	commandsContainer cont(&win);
+	Command testCom;
+	stringstream ss;
+	streambuf * coutbuf = cout.rdbuf();
+	//redirect cout to ss
+	cout.rdbuf(ss.rdbuf());
+	
+	string dummyHeader = "dummy header";
+	string dummyTail = "55";
+	int dummyTAIL = 55;
+	string expected = "tCB ch: " + dummyHeader + " ct: " + (dummyTail)+ "\n";
+
+	testCom.cbFunctions = make_pair(tCB, tUB);
+	cont.insertCommand("c", testCom);
+	cont.executeCommand("c", dummyHeader, dummyTAIL);
+		
+	cout.rdbuf(coutbuf);
+	
+	string output = ss.str();
+	EXPECT_EQ(output, expected);
+	
+}
+
 TEST(undoRedo, insertingCallbacksIntoStack){
 	Window win;
 	commandsContainer cont(&win);
