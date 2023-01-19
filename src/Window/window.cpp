@@ -1,6 +1,7 @@
 #include "window.h"
 
 // for existing files
+
 Window :: Window(string fileName){
 	m_buf = new TextBuffer;
 	m_cb = new Clipboard;
@@ -29,10 +30,25 @@ Clipboard*	Window :: getClipboardRef(){
 	return m_cb;
 }
 
-void Window :: infoWin(){
-	//start_color();
-	//init_pair(1, COLOR_BLUE, COLOR_BLUE);
+void Window :: initWin() {
+	initscr();
+	raw();
 	
+	getmaxyx(stdscr, m_rows, m_cols);
+}
+
+void Window :: endWin(){
+	t_win.freeWindow();
+	delwin(i_win);
+	endwin();
+}
+
+void Window :: initTextWin(){
+	t_win.initWindow(m_rows - 1 , m_cols, 0, 0, true, m_buf, m_cb);	
+
+}
+
+void Window :: infoWin(){	
 	int rows, cols;
 	getmaxyx(stdscr, rows, cols);
 	
@@ -46,27 +62,73 @@ void Window :: infoWin(){
 	
 }
 
-void Window :: mainWin(){
-	// rows: y cols: x
-	int rows;
-	int cols;
-	getmaxyx(stdscr, rows, cols);
-	m_win = newwin(rows - 1, cols, 0, 0);
-	box(m_win, 0, 0);
-	
-	mvwaddstr(m_win, 0, 3, "SIM");
-	
-	setCursor(1,1);
-	wmove(m_win, cursor[0], cursor[1]); 
-	wrefresh(m_win);
+void Window :: debug(){
+	cout << "Terminal Dimensions, rows: " <<  m_rows << " cols: " << m_cols << '\n';
+	t_win.printAttr();
 }
 
+
+/*
 void Window :: renderText(){
 	
+		int currRow = 1;
+		int maxRow, maxCols;
+		getmaxyx(m_win, maxRow, maxCols);
+		int line = 1;
+		int maxLines = m_buf -> getNumOfLines();
+		
+		while (currRow <= maxRow - 2 && line <= maxLines){
+			renderLine(line);
+			int cr, cc;
+			getyx(m_win, cr, cc);
+			wmove(m_win, cr + 1, 1);
+			line++;
+		}
+	
+		
 }
 
 
+void Window :: renderLine(int line){
+	// y, x : row, col
+	int row, col;
+	getmaxyx(m_win, row, col);
+
+	int numLines = m_buf -> getNumOfLines();
+	int maxNumberLength = int(log10(numLines) + 1);
+	int lnNumOfDigits = int(log10(line) + 1);
+	
+	for(int i = 0; i < maxNumberLength - lnNumOfDigits; i++){
+		waddch(m_win, '*');
+	}
+	
+
+	waddstr(m_win,  (to_string(line) + " ").c_str() );
+	// number rendered, so render line contents
+	int currY, currX;
+	getyx(m_win, currY, currX);
+	wmove(m_win, currY, currX + 1);
+	getyx(m_win, currY, currX);
+	setCursor(currY, currX);
+	
+	string lineContents = m_buf -> getLineContents(line);
+	for(int i = 0; i < lineContents.length(); i++){
+		if(cursor[1] == col - 2){
+			moveCursor(1, 0);
+			setCol(maxNumberLength + 3);
+		}
+		wmove(m_win, cursor[0], cursor[1]);
+		waddch(m_win, lineContents[i]);
+		moveCursor(0,1);
+	}
+
+	
+	
+}	
+*/
+
 void Window :: eventLoop(){
+	/*
 	getmaxyx(m_win, m_rows, m_cols);
 	
 	char userInput;
@@ -81,35 +143,15 @@ void Window :: eventLoop(){
 		
 		
 	} while (userInput != 'q');
+	*/	
+	
+	t_win.renderText();
+	wgetch(t_win.win);
 	endWin();
 }
 
-void Window :: endWin(){
-	delwin(m_win);
-	delwin(i_win);
-	endwin();
-}
 
-void Window :: initWin() {
-	initscr();
-	raw();
-}
 
-void Window :: setCursor(int y, int x){
-	cursor[0] = y;
-	cursor[1] = x;
-}
 
-void Window :: moveCursor(int y, int x){
-	cursor[0] += y;
-	cursor[1] += x;
 
-}
 
-void Window :: setCol(int x){
-	cursor[1] = x;
-}
-
-void Window :: setRow(int y){
-	cursor[0] = y;
-}
