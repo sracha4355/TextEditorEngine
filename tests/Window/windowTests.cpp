@@ -3,12 +3,16 @@
 
 TEST(windowSetup, initWindow){
 	Window sim("test.txt");
+	
+
 	sim.initWin();
 	sim.infoWin();
-	sim.mainWin();
+	sim.initTextWin();
+	
 	sim.eventLoop();	
-
-
+	
+	sim.debug();
+	sim.getBufferRef() -> dump();
 }
 
 int main(){
