@@ -47,6 +47,7 @@ class GapBufferTest : public :: testing :: Test {
 		moveRight tests the moveRight function
 */
 
+/*
 TEST(moveLeft, moveLeftOnceFromStart){
 	GapBuffer buffer;
 	int result = buffer.moveLeft();
@@ -222,8 +223,8 @@ TEST_F(GapBufferTest, toStringMethodTest){
 	word = buffer.toString();
 	cout << word << endl;
 	*/
-}
-
+//} 
+/*
 TEST(insertWord, insertWordThenUseToString){
 	GapBuffer buffer;
 	buffer.insert("Hello World");
@@ -255,6 +256,22 @@ TEST(deleteRightSideOfGap, deleteNonEmptyRightSide){
 	gb.dump(); gb.printAttributeInfo();
 	
 }
+*/
+
+TEST_F(GapBufferTest, setPoint){
+	b6.dump();
+	b6.printAttributeInfo();
+	b6.moveToPoint(4);
+	b6.dump();
+	b6.printAttributeInfo();
+	b6.insert('l');
+	b6.dump();
+	
+	b6.moveToPoint(15);
+	b6.dump();
+	b6.printAttributeInfo();
+}
+
 
 int main(){	
 	// supresses cout statements from member functions

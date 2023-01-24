@@ -67,86 +67,52 @@ void Window :: debug(){
 	t_win.printAttr();
 }
 
-
-/*
-void Window :: renderText(){
-	
-		int currRow = 1;
-		int maxRow, maxCols;
-		getmaxyx(m_win, maxRow, maxCols);
-		int line = 1;
-		int maxLines = m_buf -> getNumOfLines();
-		
-		while (currRow <= maxRow - 2 && line <= maxLines){
-			renderLine(line);
-			int cr, cc;
-			getyx(m_win, cr, cc);
-			wmove(m_win, cr + 1, 1);
-			line++;
-		}
-	
-		
-}
-
-
-void Window :: renderLine(int line){
-	// y, x : row, col
-	int row, col;
-	getmaxyx(m_win, row, col);
-
-	int numLines = m_buf -> getNumOfLines();
-	int maxNumberLength = int(log10(numLines) + 1);
-	int lnNumOfDigits = int(log10(line) + 1);
-	
-	for(int i = 0; i < maxNumberLength - lnNumOfDigits; i++){
-		waddch(m_win, '*');
-	}
-	
-
-	waddstr(m_win,  (to_string(line) + " ").c_str() );
-	// number rendered, so render line contents
-	int currY, currX;
-	getyx(m_win, currY, currX);
-	wmove(m_win, currY, currX + 1);
-	getyx(m_win, currY, currX);
-	setCursor(currY, currX);
-	
-	string lineContents = m_buf -> getLineContents(line);
-	for(int i = 0; i < lineContents.length(); i++){
-		if(cursor[1] == col - 2){
-			moveCursor(1, 0);
-			setCol(maxNumberLength + 3);
-		}
-		wmove(m_win, cursor[0], cursor[1]);
-		waddch(m_win, lineContents[i]);
-		moveCursor(0,1);
-	}
-
-	
-	
-}	
-*/
-
 void Window :: eventLoop(){
-	/*
-	getmaxyx(m_win, m_rows, m_cols);
-	
-	char userInput;
-	do { 
-		userInput = wgetch(m_win);
-		moveCursor(0, 1);
-		wmove(m_win, cursor[0], cursor[1]);
-		if(cursor[1] == m_cols - 2){
-			moveCursor(1,0);
-			setCol(0);
-		}
-		
-		
-	} while (userInput != 'q');
-	*/	
-	
+	m_buf -> setCurrentLine(1);
 	t_win.renderText();
-	wgetch(t_win.win);
+	/*
+		t_win.renderText();
+		t_win.moveDown();
+		t_win.moveDown();
+		t_win.moveDown();
+		t_win.moveDown();
+		t_win.moveDown();
+		t_win.moveUp();
+				t_win.moveUp();
+		for(int i = 0; i < 10; i++) 				t_win.moveUp();
+	*/
+		for(int i = 0; i < 100; i++)t_win.moveRight();
+	/* 
+	
+	t_win.moveLeft();
+	for(int i = 0; i < 100; i++)t_win.moveLeft();
+	for(int i = 0; i < 100; i++)t_win.moveRight();
+
+	for(int i = 0; i < 1000; i++)t_win.moveLeft();
+	for(int i = 0; i < 1000; i++)t_win.moveRight();
+	t_win.moveDown();
+	t_win.moveDown();
+	t_win.moveDown();
+	t_win.moveDown();
+	t_win.moveDown();
+	for(int i = 0; i < 1000; i++)t_win.moveRight();	
+	for(int i = 0; i < 1000; i++)t_win.moveDown();
+	
+		for(int i = 0; i < 1000; i++)t_win.movevi CRight();
+			for(int i = 0; i < 1000; i++)t_win.moveLeft();
+					for(int i = 0; i < 1000; i++)t_win.moveRight();
+	*/
+
+
+	wrefresh(t_win.win);
+	char userInput = wgetch(t_win.win);
+	while(userInput != 'q'){
+
+		wrefresh(t_win.win);
+		userInput = wgetch(t_win.win);
+		wrefresh(t_win.win);
+
+	}
 	endWin();
 }
 

@@ -13,6 +13,7 @@ TEST(windowSetup, initWindow){
 	
 	sim.debug();
 	sim.getBufferRef() -> dump();
+	cout << sim.getBufferRef() -> getLine(5) -> getOccupied() << endl;
 }
 
 int main(){

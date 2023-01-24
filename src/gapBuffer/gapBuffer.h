@@ -42,6 +42,7 @@ class GapBuffer {
 		// move to the beginning or end of the gapBuffer
 		int moveToStart();
 		int moveToEnd();
+		int moveToPoint(int);
 
 		//gets info from gapbuffer and stores into a string
 		string toString();
