@@ -264,6 +264,20 @@ int GapBuffer :: moveToEnd(){
 	return m_gapEndPos;
 }
 
+int GapBuffer :: moveToPoint(int point){
+	if(point < 0 || point > m_indexOfLastElement) return -1;
+	if(point < m_gapStartPos){
+		while(m_gapStartPos != point){
+			moveLeft();
+		}
+	} else{
+		while(m_gapStartPos != point){
+			cout << "in loop" << endl;
+			moveRight();
+		}
+	}
+	return m_gapStartPos;
+}
 
 
 /* getters and setters */
@@ -364,7 +378,6 @@ void GapBuffer:: resize(){
 	// the index of the last element is shifted 0 units/indices
 	if(m_gapEndPos == m_size - 1 || m_buffer[m_gapEndPos + 1] == (char) 0) units = 0;
 	m_indexOfLastElement += units;
-
 	
 }
 
