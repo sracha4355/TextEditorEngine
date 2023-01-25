@@ -71,11 +71,17 @@ struct TextWindow{
 	void remove();
 	
 	//test method
-	bool renderLine(int);
+	bool renderLine(int, bool);
 	bool spaceLeftForText2(int, int);
 	
 	int getLength(string);
-	void renderText();
+	void renderText(bool);
+
+	void updateWindow();
+	void updateLine();
+	
+
+	
 	void clearText();
 	
 	unique_ptr<Line>& getLinePair(int);

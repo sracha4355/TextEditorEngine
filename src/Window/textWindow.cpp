@@ -33,7 +33,7 @@ void TextWindow :: setupWithoutBox(){
 
 
 
-void TextWindow :: renderText(){
+void TextWindow :: renderText(bool passToRenderLine){
 	if (dimensions[0] == 2) return;
 
 	lines.clear();
@@ -47,7 +47,7 @@ void TextWindow :: renderText(){
 	// might have to change later
 	int i = tbuf -> getCurrentLine();
 	while (cont && i <= tbuf -> getNumOfLines()){
-		cont = renderLine(i);
+		cont = renderLine(i, passToRenderLine);
 		i++;
 	}
 	wrefresh(win);
@@ -69,12 +69,13 @@ void TextWindow :: advanceCursor(){
 
 }
 
-bool TextWindow :: renderLine(int line){
+bool TextWindow :: renderLine(int line, bool moveToStart){
 
 	if(cursor[0] == bounds.BOTTOM + 1) return false;
 
-	tbuf -> getLine(line) -> moveToStart();
-	
+	if(moveToStart){
+		tbuf -> getLine(line) -> moveToStart();
+	}
 	
 	int numLines = tbuf -> getNumOfLines();
 	int mnumOfDigits = int(log10(numLines) + 1); 
@@ -187,7 +188,7 @@ void TextWindow ::  moveRight(){
 	
 	int res = gb -> moveRight();
 	if(res == -1) return;
-	char ch = gb -> getValueAt(text_line -> bufferPos);
+	char ch = gb -> getValueAt(gb -> getStartPos() - 1);
 	
 	if(ch == '\t'){
 		getyx(win, cursor[0], cursor[1]);
@@ -207,8 +208,8 @@ void TextWindow ::  moveLeft(){
 	
 	text_line -> bufferPos -= 1;
 
-	char ch = gb -> getValueAt(text_line -> bufferPos);
 	int res = gb -> moveLeft();
+	char ch = gb -> getValueAt(gb -> getEndPos() + 1);
 	if(res == -1) {
 		text_line -> bufferPos += 1;
 		return;
@@ -231,15 +232,12 @@ void TextWindow :: moveUp(){
 	tbuf -> setCurrentLine(currLine - 1);
 	if(currLine == topLine){
 		clearText();
-		renderText();
+		renderText(false);
 		return;
 	} else{
 		auto & text_line = getLinePair(tbuf -> getCurrentLine());
 		wmove(win, text_line -> currPos[0], text_line -> currPos[1]);
 	}	
-	
-
-	
 }
 void TextWindow ::  moveDown(){
 	if(lines.empty()) return;
@@ -249,7 +247,7 @@ void TextWindow ::  moveDown(){
 	tbuf -> setCurrentLine(currLine + 1);	
 	if(currLine == lastLine){
 		clearText();
-		renderText();
+		renderText(false);
 	}else{
 		auto & text_line = getLinePair(tbuf -> getCurrentLine());
 		wmove(win, text_line -> currPos[0], text_line -> currPos[1]);
@@ -264,11 +262,56 @@ void TextWindow :: insert(char ch){
 	auto & text_line = getLinePair(tbuf -> getCurrentLine());
 	GapBuffer * gb = tbuf -> getLine(currentLine);
 	gb -> insert(ch);
+	text_line -> bufferPos += 1;
+	winsch(win, ch);	
+	if(ch == '\t'){
+		for(int i = 0; i < winTabsize; i++)
+			advanceCursorInLine(text_line -> currPos);	
+	} else advanceCursorInLine(text_line -> currPos);
 	
-	advanceCursorInLine(text_line -> currPos);
+	text_line -> lastCharPos[1] += 1;
+	
+	for(int i = 0; i < dimensions[0]; i++){
+		if(mvwinch(win, i, bounds.RIGHT) != '|'){
+			clearText();
+			renderText(false);
+			return;
+		}
+	}	
+	
+	if(text_line -> lastCharPos[1] == bounds.RIGHT + 1){
+		clearText();
+		renderText(false);
+		return;
+	}
 	
 }
 
+void TextWindow :: updateWindow(){
+	if (dimensions[0] == 2) return;
+	
+	if(tbuf -> getNumOfLines() < 1) return;
+	bool cont = true;
+	
+	//tbuf -> setCurrentLine(startLine);
+	
+	// sets the current line in the buffer to the top line we render
+	// might have to change later
+	int i = tbuf -> getCurrentLine();
+	while (cont && i <= tbuf -> getNumOfLines()){
+		cont = renderLine(i, false);
+		i++;
+	}
+	wrefresh(win);
+	
+
+	wmove(win, 1, lineWrapCol);
+	getyx(win, cursor[0], cursor[1]);
+}
+
+void TextWindow :: updateLine(){
+	
+}
 
 unique_ptr<Line>& TextWindow :: getLinePair(int line){
  	auto it = lines.find(line);

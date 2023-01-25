@@ -69,7 +69,7 @@ void Window :: debug(){
 
 void Window :: eventLoop(){
 	m_buf -> setCurrentLine(1);
-	t_win.renderText();
+	t_win.renderText(true);
 	/*
 		t_win.renderText();
 		t_win.moveDown();
@@ -81,27 +81,14 @@ void Window :: eventLoop(){
 				t_win.moveUp();
 		for(int i = 0; i < 10; i++) 				t_win.moveUp();
 	*/
-		for(int i = 0; i < 100; i++)t_win.moveRight();
-	/* 
-	
-	t_win.moveLeft();
-	for(int i = 0; i < 100; i++)t_win.moveLeft();
-	for(int i = 0; i < 100; i++)t_win.moveRight();
 
+	
+	
+	
+	for(int i = 0; i < 1000; i++)t_win.moveRight();
 	for(int i = 0; i < 1000; i++)t_win.moveLeft();
 	for(int i = 0; i < 1000; i++)t_win.moveRight();
-	t_win.moveDown();
-	t_win.moveDown();
-	t_win.moveDown();
-	t_win.moveDown();
-	t_win.moveDown();
-	for(int i = 0; i < 1000; i++)t_win.moveRight();	
-	for(int i = 0; i < 1000; i++)t_win.moveDown();
 	
-		for(int i = 0; i < 1000; i++)t_win.movevi CRight();
-			for(int i = 0; i < 1000; i++)t_win.moveLeft();
-					for(int i = 0; i < 1000; i++)t_win.moveRight();
-	*/
 
 
 	wrefresh(t_win.win);
