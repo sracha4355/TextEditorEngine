@@ -8,6 +8,7 @@ GapBuffer :: GapBuffer(int bufferSize, int gapSize){
 		m_buffer[i] = 0;
 	}
 	
+	
 	m_size = bufferSize;
 	m_occupied = 0;
 	m_indexOfLastElement = 0;

@@ -9,25 +9,12 @@ using namespace std;
 #define MINSIZE 20
 #define MINGAPSIZE 8
 
-/*
-	gapBuffer implementation:
-	- track current position in buffer
-	- move the buffer left and right
-	- copy characters in the buffer properly
-	- resize buffer gap
-	- throw an error if we pass the max buffer size, and resize the buffer
-	- memory deallocation
-
-*/
-
 class GapBuffer {
 	public:
-
 		GapBuffer();
 		GapBuffer(int, int);
 		~GapBuffer();
-		
-		
+				
 		// moves the gap left or right by one, adjusting the characters around the gap
 		int moveLeft();
 		int moveRight();
@@ -79,12 +66,11 @@ class GapBuffer {
 		int m_gapEndPos; // right pos of gap buffer
 		int m_size; // the size of the whole buffer
 		int m_occupied; // how many indices are occupied
-		int m_indexOfLastElement;
+		int m_indexOfLastElement; // tracks the index of the last filled position in the the gap buffer
 		
 		
 		/* private helper functions*/
 		void clearBuffer();
-		
 		// resize the gap
 		void resize();
 		//resize the buffer array
