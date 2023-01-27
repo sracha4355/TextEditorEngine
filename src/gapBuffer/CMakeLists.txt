@@ -1,4 +1,4 @@
-#src cmake
+
 
 add_library(GapBuffer gapBuffer.cpp)
 

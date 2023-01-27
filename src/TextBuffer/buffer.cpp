@@ -10,12 +10,12 @@ TextBuffer :: TextBuffer(){
 
 TextBuffer :: ~TextBuffer(){}
 
-/* Print the TextBuffer in this format
+/* Prints the TextBuffer in this format
 	line number: contents
 	ex: 1: H e l l o _ _ w o r l d
 		2: _ _ _ _ _ _ _ _
 		
-	This is for debugging purposes, a new line character will be printed as *
+This is for debugging purposes, a new line character will be printed as  '*'
 */
 void TextBuffer :: dump(){
 	cout << "Text Buffer dump, num of lines: " << m_numOfLines << endl;

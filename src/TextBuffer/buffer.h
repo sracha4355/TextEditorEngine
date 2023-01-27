@@ -2,7 +2,6 @@
 #define TEXTBUFFER_H
 
 #include <gapBuffer.h>
-#include <set>
 #include <map>
 #include <string>
 
@@ -20,9 +19,20 @@ class TextBuffer {
 		void setCurrentLine(int);
 		
 		/*
-		 based on the current location in the textbuffer, remove can append two lines into one
+		 based on the current location in the textbuffer, remove can 
+		 append two lines into one
 		 or remove a character on the currentLine
-		*/
+		 if the beginning of the gap is at the beginning of the 
+		 gap buffer array, then logically, the current line will be 	
+		 merged with the line above it
+		 Ex:
+		 Hello world
+		 Hello next line
+		 - if the gap buffer's gap of line 2 is at the beginning, a 
+		 remove operation will result in 
+		 Hello worldHello next line
+		 given the current line at the time of the operation was line 2
+		*/		
 		bool remove();
 			
 		void createNewLine();

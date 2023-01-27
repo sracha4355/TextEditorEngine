@@ -1,5 +1,4 @@
 #pragma once
-
 #include "buffer.h"
 #include <fstream>
 #include <string>
@@ -17,11 +16,9 @@ struct File{
 	string m_fileName;
 
 	File() : m_buffer(nullptr), m_fileName(""){}
-	bool m_writeFromLog = false;
 	// sets the buffer for which read and write operations will be performed
 	bool readData();
 	bool writeData();
-	bool optimizedWrite();
 	bool clearFile();
 };
 
