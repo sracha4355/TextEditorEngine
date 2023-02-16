@@ -33,7 +33,7 @@ bool File :: writeData(){
 	file.close();
 	return true;
 }
-
+/*
 bool File :: clearFile(){
 	ofstream file(m_fileName);
 	if(!file){
@@ -43,3 +43,4 @@ bool File :: clearFile(){
 	file.close();
 	return true;
 }
+*/
