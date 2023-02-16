@@ -19,7 +19,7 @@ struct File{
 	// sets the buffer for which read and write operations will be performed
 	bool readData();
 	bool writeData();
-	bool clearFile();
+	//bool clearFile();
 };
 
 /*
