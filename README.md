@@ -1,7 +1,7 @@
 # TextEditorEngine
 A Text editor engine that utilizes a gap Buffers stored in a binary search tree for efficient text manipulation, allowing for fast insertion and deletion of large text files, and with the ability to read and write files from and to your system. This engine can be used as a backend for a text editor.
 
-IN-DEPTH DOCUMENTATION *need to insert hyperlink here*
+DOCUMENTATION: https://sracha4355.github.io/TextEditorEngine/#/overview
 
 How to build using cmake and use library: 
 - clone repo
